@@ -155,6 +155,31 @@
       to   { transform: scale(9); opacity: 0; }
     }
 
+    #music-btn {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.4rem;
+      z-index: 20;
+      background: rgba(196,181,253,0.08);
+      border: 1px solid rgba(196,181,253,0.25);
+      color: rgba(200,210,255,0.65);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    #music-btn:hover {
+      background: rgba(196,181,253,0.18);
+      color: rgba(220,210,255,0.95);
+      border-color: rgba(196,181,253,0.5);
+    }
+
     @media (max-width: 600px) {
       .text-row { font-size: clamp(1rem, 6vw, 2rem); }
       .float-wrap { width: clamp(90px, 20vw, 140px); height: clamp(90px, 20vw, 140px); }
@@ -165,6 +190,12 @@
   <div class="bg-gradient"></div>
   <canvas id="particles"></canvas>
   <div class="scanlines"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="Fake-Plastic-Trees-Radiohead.mp3" type="audio/mpeg">
+  </audio>
+
+  <button id="music-btn">&#9654; play music</button>
 
   <main class="wrapper" id="scene">
     <div class="text-wall" id="textWall"></div>
@@ -184,6 +215,21 @@
     const rainName = document.getElementById("rainName");
     const floatLayer = document.getElementById("floatLayer");
     const textWall = document.getElementById("textWall");
+    const bgMusic = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("music-btn");
+
+    let playing = false;
+    musicBtn.addEventListener("click", () => {
+      if (!playing) {
+        bgMusic.play();
+        musicBtn.textContent = "⏸ pause";
+        playing = true;
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "▶ play music";
+        playing = false;
+      }
+    });
 
     let W = window.innerWidth, H = window.innerHeight;
     let mx = W * 0.5, my = H * 0.5;
@@ -261,7 +307,7 @@
     }
 
     const IMG_SRCS = [
-       "rvs1.jpg",
+      "rvs1.jpg",
       "rvs2.jpg",
       "rvs3.jpg",
       "rvs4.jpg",
