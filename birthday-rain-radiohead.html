@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday RAIN</title>
+  <style>
+    :root {
+      --bg-1: #07040f;
+      --bg-2: #170826;
+      --neon-cyan: #8be9fd;
+      --neon-yellow: #ffe66d;
+      --neon-green: #83f28f;
+      --neon-pink: #ff6ec7;
+      --neon-red: #ff4d5a;
+      --text: #f5f6fb;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --cursor-x: 50vw;
+      --cursor-y: 50vh;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 10%, #310024 0%, transparent 35%),
+                  radial-gradient(circle at 80% 65%, #4f2500 0%, transparent 40%),
+                  linear-gradient(120deg, var(--bg-1), var(--bg-2));
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20vmax;
+      background: conic-gradient(
+        from 180deg at 50% 50%,
+        rgba(255, 102, 0, 0.15),
+        rgba(0, 187, 255, 0.16),
+        rgba(255, 241, 0, 0.12),
+        rgba(255, 0, 98, 0.14),
+        rgba(255, 102, 0, 0.15)
+      );
+      filter: blur(30px) saturate(140%);
+      animation: swirl 24s linear infinite;
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 3px 3px;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    #cursorAura {
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      pointer-events: none;
+      left: calc(var(--cursor-x) - 140px);
+      top: calc(var(--cursor-y) - 140px);
+      background: radial-gradient(circle at center, rgba(255, 248, 195, 0.35), rgba(150, 120, 255, 0.04) 65%, transparent 75%);
+      filter: blur(6px);
+      mix-blend-mode: screen;
+      transition: transform 0.12s linear;
+      z-index: 4;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.02) 0 1px,
+        rgba(0, 0, 0, 0.04) 2px 3px
+      );
+      mix-blend-mode: overlay;
+      z-index: 19;
+    }
+
+    .wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .rainbow-text-wall {
+      position: absolute;
+      inset: 0;
+      font-size: clamp(1.3rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      line-height: 1.08;
+      text-transform: uppercase;
+      opacity: 0.2;
+      user-select: none;
+      pointer-events: none;
+      display: grid;
+      place-items: center;
+      transform: translate3d(0, 0, 0);
+      z-index: 0;
+      filter: saturate(130%) contrast(110%);
+    }
+
+    .rainbow-text-wall span {
+      display: block;
+      white-space: nowrap;
+      animation: drift 15s ease-in-out infinite alternate;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+    }
+
+    .rainbow-text-wall span:nth-child(1) { color: var(--neon-yellow); }
+    .rainbow-text-wall span:nth-child(2) { color: #62adff; animation-delay: -1.2s; }
+    .rainbow-text-wall span:nth-child(3) { color: #ff9f43; animation-delay: -2.1s; }
+    .rainbow-text-wall span:nth-child(4) { color: var(--neon-green); animation-delay: -3.3s; }
+    .rainbow-text-wall span:nth-child(5) { color: #fff38a; animation-delay: -4.4s; }
+    .rainbow-text-wall span:nth-child(6) { color: var(--neon-red); animation-delay: -5.5s; }
+    .rainbow-text-wall span:nth-child(7) { color: #9be9ff; animation-delay: -6.7s; }
+
+    .birthday-card {
+      position: relative;
+      width: min(90vw, 840px);
+      padding: clamp(1.2rem, 2.6vw, 2rem);
+      border-radius: 22px;
+      backdrop-filter: blur(8px) saturate(130%);
+      background: linear-gradient(
+        120deg,
+        rgba(10, 8, 22, 0.52),
+        rgba(26, 8, 44, 0.38) 48%,
+        rgba(52, 20, 10, 0.34)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 20px 70px var(--shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      z-index: 6;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out;
+      overflow: hidden;
+    }
+
+    .birthday-card::before {
+      content: "";
+      position: absolute;
+      inset: -120% 40% auto -60%;
+      height: 280%;
+      background: linear-gradient(transparent, rgba(255, 255, 255, 0.18), transparent);
+      transform: rotate(24deg);
+      animation: shine 7.5s linear infinite;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 5.2vw, 4rem);
+      letter-spacing: 0.08em;
+      line-height: 1.03;
+      text-transform: uppercase;
+      text-shadow: 0 0 22px rgba(255, 255, 255, 0.15);
+      margin-bottom: 0.8rem;
+    }
+
+    .name {
+      color: var(--neon-yellow);
+      text-shadow:
+        0 0 10px rgba(255, 230, 109, 0.8),
+        0 0 28px rgba(255, 230, 109, 0.45);
+    }
+
+    .subtitle {
+      font-size: clamp(0.95rem, 1.9vw, 1.15rem);
+      opacity: 0.95;
+      max-width: 66ch;
+      margin-bottom: 1rem;
+      color: #edf2ff;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      color: #12071d;
+      background: linear-gradient(90deg, var(--neon-yellow), #fff9bd);
+      box-shadow: 0 8px 20px rgba(255, 230, 109, 0.2);
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .btn.alt {
+      background: linear-gradient(90deg, #a5ebff, #d8f5ff);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: saturate(1.1);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    #message {
+      margin-top: 1rem;
+      min-height: 1.4rem;
+      font-size: 0.95rem;
+      color: #fff4c7;
+      letter-spacing: 0.02em;
+    }
+
+    .floating-images {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .float-img {
+      position: absolute;
+      width: clamp(78px, 11vw, 145px);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
+      opacity: 0.85;
+      filter: saturate(125%) contrast(110%);
+      animation: bob 8s ease-in-out infinite;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .float-img:nth-child(1) { left: 8%; top: 15%; animation-delay: -1.2s; }
+    .float-img:nth-child(2) { left: 78%; top: 12%; animation-delay: -3.1s; }
+    .float-img:nth-child(3) { left: 10%; top: 70%; animation-delay: -2.2s; }
+    .float-img:nth-child(4) { left: 76%; top: 66%; animation-delay: -4.4s; }
+    .float-img:nth-child(5) { left: 44%; top: 10%; animation-delay: -5.2s; }
+    .float-img:nth-child(6) { left: 43%; top: 76%; animation-delay: -2.8s; }
+
+    .floating-tip {
+      position: absolute;
+      right: 1rem;
+      bottom: 0.8rem;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      z-index: 10;
+    }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .ripple {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      margin-left: -9px;
+      margin-top: -9px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.55);
+      pointer-events: none;
+      animation: ripple 620ms ease-out forwards;
+      z-index: 30;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(-6px) translateX(-18px) rotate(-0.2deg); }
+      to   { transform: translateY(8px) translateX(18px) rotate(0.2deg); }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-16px) rotate(2deg); }
+    }
+
+    @keyframes swirl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-120%) rotate(24deg); }
+      100% { transform: translateX(240%) rotate(24deg); }
+    }
+
+    @keyframes ripple {
+      from { transform: scale(1); opacity: 0.88; }
+      to { transform: scale(10); opacity: 0; }
+    }
+
+    @media (max-width: 720px) {
+      .rainbow-text-wall {
+        font-size: clamp(1rem, 6.8vw, 2.2rem);
+      }
+      .birthday-card {
+        width: 93vw;
+      }
+      .floating-tip {
+        font-size: 0.72rem;
+      }
+      .float-img {
+        width: clamp(66px, 19vw, 102px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div id="cursorAura"></div>
+  <div class="scanlines"></div>
+
+  <main class="wrapper" id="scene">
+    <section class="rainbow-text-wall" aria-hidden="true">
+      <div>
+        <span>IN / RAINBOWS IN / RAINBOWS IN / RAINBOWS</span>
+        <span>IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS</span>
+        <span>IN RAINBOW/S IN RAINBOW/S IN RAINBOW/S</span>
+        <span>IN RAINBOWS / IN RAINBOWS / IN RAINBOWS</span>
+        <span>RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D</span>
+        <span>_RAD IO HEA D _RAD IO HEA D _RAD IO HEA D</span>
+        <span>HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN</span>
+      </div>
+    </section>
+
+    <section class="floating-images" id="floatingImages">
+      <!-- Replace these src values with your own images later -->
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+1" alt="Floating memory 1">
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+2" alt="Floating memory 2">
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+3" alt="Floating memory 3">
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+4" alt="Floating memory 4">
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+5" alt="Floating memory 5">
+      <img class="float-img" src="https://via.placeholder.com/300x300.png?text=RAIN+6" alt="Floating memory 6">
+      <div class="floating-tip">Tip: swap placeholder image URLs with your own photos.</div>
+    </section>
+
+    <section class="birthday-card" id="birthdayCard">
+      <h1>HAPPY BIRTHDAY <span class="name">RAIN</span></h1>
+      <p class="subtitle">
+        Tonight glows in color, noise, and wonder.
+        May your year be full of soft chaos, bright art, and beautiful surprises.
+      </p>
+      <p class="subtitle">
+        Move your cursor around, click anywhere for ripples, and hit the buttons for tiny magic.
+      </p>
+
+      <div class="button-row">
+        <button class="btn" id="burstBtn" type="button">Color Burst</button>
+        <button class="btn alt" id="shuffleBtn" type="button">Shuffle Floating Pics</button>
+      </div>
+      <div id="message" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const card = document.getElementById("birthdayCard");
+    const scene = document.getElementById("scene");
+    const floatingImages = Array.from(document.querySelectorAll(".float-img"));
+    const message = document.getElementById("message");
+    const burstBtn = document.getElementById("burstBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+
+    let mouseX = window.innerWidth * 0.5;
+    let mouseY = window.innerHeight * 0.5;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // Tiny atmospheric particles with cursor attraction.
+    const particles = Array.from({ length: 110 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 1.8 + 0.8,
+      alpha: Math.random() * 0.55 + 0.15
+    }));
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const pull = Math.max(0, 1 - dist / 180) * 0.045;
+
+        p.vx += (dx / dist) * pull;
+        p.vy += (dy / dist) * pull;
+        p.vx *= 0.985;
+        p.vy *= 0.985;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -20) p.x = canvas.width + 20;
+        if (p.x > canvas.width + 20) p.x = -20;
+        if (p.y < -20) p.y = canvas.height + 20;
+        if (p.y > canvas.height + 20) p.y = -20;
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 245, 220, ${p.alpha})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    function updateParallax(x, y) {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+
+      card.style.transform = `rotateY(${dx * 6}deg) rotateX(${dy * -5}deg) translateZ(0)`;
+      scene.style.transform = `translate(${dx * -3}px, ${dy * -3}px)`;
+
+      floatingImages.forEach((img, i) => {
+        const depth = (i % 3 + 1) * 2.2;
+        img.style.transform = `translate(${dx * depth * -6}px, ${dy * depth * -6}px)`;
+      });
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      root.style.setProperty("--cursor-x", `${e.clientX}px`);
+      root.style.setProperty("--cursor-y", `${e.clientY}px`);
+      updateParallax(e.clientX, e.clientY);
+    });
+
+    window.addEventListener("click", (e) => {
+      const ripple = document.createElement("span");
+      ripple.className = "ripple";
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 700);
+    });
+
+    burstBtn.addEventListener("click", () => {
+      document.body.animate(
+        [
+          { filter: "hue-rotate(0deg) saturate(1)" },
+          { filter: "hue-rotate(95deg) saturate(1.3)" },
+          { filter: "hue-rotate(0deg) saturate(1)" }
+        ],
+        { duration: 1100, easing: "ease-in-out" }
+      );
+      message.textContent = "A color burst for RAIN.";
+    });
+
+    shuffleBtn.addEventListener("click", () => {
+      floatingImages.forEach((img) => {
+        const left = Math.random() * 80 + 8;
+        const top = Math.random() * 76 + 8;
+        const tilt = Math.random() * 10 - 5;
+        img.style.left = `${left}%`;
+        img.style.top = `${top}%`;
+        img.style.rotate = `${tilt}deg`;
+      });
+      message.textContent = "Floating memories remixed.";
+    });
+
+    // Optional: keyboard surprise.
+    window.addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "r") {
+        message.textContent = "RAIN mode activated.";
+        burstBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
