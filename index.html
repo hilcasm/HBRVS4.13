@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday RAIN</title>
+  <title>HBD RVS 4.13</title>
   <style>
     :root {
       --bg-deep: #06030e;
@@ -71,9 +71,7 @@
       overflow: hidden;
     }
 
-    .text-row span {
-      display: inline;
-    }
+    .text-row span { display: inline; }
 
     .text-row:nth-child(1) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7), 0 0 80px rgba(196,181,253,0.4); opacity: 0.85; }
     .text-row:nth-child(2) span { color: var(--c5); text-shadow: 0 0 14px rgba(147,197,253,1), 0 0 40px rgba(147,197,253,0.7), 0 0 80px rgba(147,197,253,0.4); opacity: 0.78; }
@@ -83,15 +81,9 @@
     .text-row:nth-child(6) span { color: var(--c6); text-shadow: 0 0 14px rgba(251,113,133,1), 0 0 40px rgba(251,113,133,0.7), 0 0 80px rgba(251,113,133,0.4); opacity: 0.82; }
     .text-row:nth-child(7) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7), 0 0 80px rgba(196,181,253,0.4); opacity: 0.78; }
 
-    #particles {
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 1;
-    }
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
 
-    .floating-images {
-      position: absolute; inset: 0;
-      pointer-events: none; z-index: 3;
-    }
+    .floating-images { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 
     .float-wrap {
       position: absolute;
@@ -176,9 +168,7 @@
 
   <main class="wrapper" id="scene">
     <div class="text-wall" id="textWall"></div>
-
     <section class="floating-images" id="floatLayer"></section>
-
     <div class="center-card" id="centerCard">
       <h1 class="hb-main">HAPPY BIRTHDAY <span class="rain-name" id="rainName">RAIN</span></h1>
       <p class="hb-sub">matanda ka na mahal</p>
@@ -301,23 +291,67 @@
     const RETURN_DAMP = 0.78;
     const WOBBLE_DAMP = 0.80;
     const margin = 24;
+    const MIN_STAR_GAP = 190;
+    const CENTER_CLEAR_R = 280;
+    const MAX_ATTEMPTS = 400;
 
-    function randomHome(s) {
-      const topZone = H * 0.28;
-      const bottomZone = H * 0.72;
-      let hx, hy;
-      if (Math.random() < 0.5) {
-        hy = rnd(margin, topZone - s - margin);
-      } else {
-        hy = rnd(bottomZone, H - s - margin);
+    function placeHomes(count, s) {
+      const placed = [];
+      const centerX = W * 0.5;
+      const centerY = H * 0.5;
+      const topZone = H * 0.32;
+      const bottomZone = H * 0.68;
+
+      for (let i = 0; i < count; i++) {
+        let bestPos = null;
+        let bestScore = -Infinity;
+
+        for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+          let hx, hy;
+
+          if (Math.random() < 0.5) {
+            hy = rnd(margin, topZone - s - margin);
+          } else {
+            hy = rnd(bottomZone, H - s - margin);
+          }
+          hx = rnd(margin, W - s - margin);
+
+          const cx = hx + s * 0.5;
+          const cy = hy + s * 0.5;
+
+          if (Math.hypot(cx - centerX, cy - centerY) < CENTER_CLEAR_R) continue;
+
+          let minDist = Infinity;
+          for (const p of placed) {
+            const d = Math.hypot(cx - p.cx, cy - p.cy);
+            if (d < minDist) minDist = d;
+          }
+
+          if (placed.length === 0) minDist = Infinity;
+
+          if (minDist >= MIN_STAR_GAP) {
+            bestPos = { hx, hy, cx, cy };
+            break;
+          }
+
+          if (minDist > bestScore) {
+            bestScore = minDist;
+            bestPos = { hx, hy, cx, cy };
+          }
+        }
+
+        if (bestPos) placed.push(bestPos);
       }
-      hx = rnd(margin, W - s - margin);
-      return { hx, hy };
+
+      return placed;
     }
+
+    const s0 = getSize();
+    const homes = placeHomes(IMG_SRCS.length, s0);
 
     const floats = IMG_SRCS.map((src, i) => {
       const s = getSize();
-      const { hx, hy } = randomHome(s);
+      const { hx, hy } = homes[i] || { hx: rnd(margin, W - s - margin), hy: rnd(margin, H * 0.3) };
 
       const wrap = document.createElement("div");
       wrap.className = "float-wrap";
