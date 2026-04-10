@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday RAIN</title>
+  <style>
+    :root {
+      --bg-deep: #06030e;
+      --c1: #c4b5fd;
+      --c2: #f9a8d4;
+      --c3: #6ee7b7;
+      --c4: #fde68a;
+      --c5: #93c5fd;
+      --c6: #fb7185;
+      --text: #f1f0fb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg-deep);
+    }
+
+    .bg-gradient {
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 12% 18%, rgba(139,92,246,0.45) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 38% at 88% 78%, rgba(236,72,153,0.38) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 55% at 50% 50%, rgba(16,10,35,0.85) 0%, var(--bg-deep) 100%);
+      z-index: -2;
+    }
+
+    .scanlines {
+      position: fixed; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.018) 0 1px,
+        transparent 1px 3px
+      );
+      z-index: 18;
+    }
+
+    .wrapper {
+      position: relative; width: 100%; height: 100%;
+      display: grid; place-items: center; overflow: hidden;
+    }
+
+    .text-wall {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      line-height: 1.12;
+      pointer-events: none; user-select: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .text-row {
+      width: 100%;
+      text-align: center;
+      font-size: clamp(1.1rem, 3.2vw, 3.4rem);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .text-row span {
+      display: inline;
+    }
+
+    .text-row:nth-child(1) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7), 0 0 80px rgba(196,181,253,0.4); opacity: 0.85; }
+    .text-row:nth-child(2) span { color: var(--c5); text-shadow: 0 0 14px rgba(147,197,253,1), 0 0 40px rgba(147,197,253,0.7), 0 0 80px rgba(147,197,253,0.4); opacity: 0.78; }
+    .text-row:nth-child(3) span { color: var(--c3); text-shadow: 0 0 14px rgba(110,231,183,1), 0 0 40px rgba(110,231,183,0.7), 0 0 80px rgba(110,231,183,0.4); opacity: 0.82; }
+    .text-row:nth-child(4) span { color: var(--c4); text-shadow: 0 0 14px rgba(253,230,138,1), 0 0 40px rgba(253,230,138,0.7), 0 0 80px rgba(253,230,138,0.4); opacity: 0.85; }
+    .text-row:nth-child(5) span { color: var(--c2); text-shadow: 0 0 14px rgba(249,168,212,1), 0 0 40px rgba(249,168,212,0.7), 0 0 80px rgba(249,168,212,0.4); opacity: 0.78; }
+    .text-row:nth-child(6) span { color: var(--c6); text-shadow: 0 0 14px rgba(251,113,133,1), 0 0 40px rgba(251,113,133,0.7), 0 0 80px rgba(251,113,133,0.4); opacity: 0.82; }
+    .text-row:nth-child(7) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7), 0 0 80px rgba(196,181,253,0.4); opacity: 0.78; }
+
+    #particles {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 1;
+    }
+
+    .floating-images {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 3;
+    }
+
+    .float-wrap {
+      position: absolute;
+      width: clamp(130px, 16vw, 210px);
+      height: clamp(130px, 16vw, 210px);
+    }
+
+    .float-wrap svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      overflow: visible;
+    }
+
+    .center-card {
+      position: relative; z-index: 6;
+      text-align: center; pointer-events: none;
+      will-change: transform;
+      background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(6,3,14,0.75) 0%, transparent 100%);
+      padding: 2.5rem 3.5rem;
+      border-radius: 2rem;
+    }
+
+    .hb-main {
+      display: block;
+      font-size: clamp(2rem, 7.5vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      line-height: 0.95;
+      color: #ffffff;
+      text-shadow: 0 0 24px rgba(196,181,253,1), 0 0 60px rgba(196,181,253,0.55), 0 2px 6px rgba(0,0,0,0.9);
+    }
+
+    .rain-name {
+      display: inline-block;
+      transition: color 0.9s ease, text-shadow 0.9s ease;
+    }
+
+    .hb-sub {
+      margin-top: 0.6rem;
+      font-size: clamp(0.7rem, 1.3vw, 1rem);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(200,210,255,0.5);
+    }
+
+    .lyric {
+      position: fixed; bottom: 1.2rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(210,220,255,0.45);
+      z-index: 9; pointer-events: none; white-space: nowrap;
+    }
+
+    .ripple {
+      position: fixed;
+      width: 16px; height: 16px;
+      margin-left: -8px; margin-top: -8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(196,181,253,0.6);
+      pointer-events: none;
+      animation: ripple 600ms ease-out forwards;
+      z-index: 30;
+    }
+
+    @keyframes ripple {
+      from { transform: scale(1); opacity: 0.85; }
+      to   { transform: scale(9); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .text-row { font-size: clamp(1rem, 6vw, 2rem); }
+      .float-wrap { width: clamp(90px, 20vw, 140px); height: clamp(90px, 20vw, 140px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <canvas id="particles"></canvas>
+  <div class="scanlines"></div>
+
+  <main class="wrapper" id="scene">
+    <div class="text-wall" id="textWall"></div>
+
+    <section class="floating-images" id="floatLayer"></section>
+
+    <div class="center-card" id="centerCard">
+      <h1 class="hb-main">HAPPY BIRTHDAY <span class="rain-name" id="rainName">RAIN</span></h1>
+      <p class="hb-sub">matanda ka na mahal</p>
+    </div>
+  </main>
+
+  <p class="lyric">"I'm in the middle of your picture, lying in the reeds."</p>
+
+  <script>
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    const centerCard = document.getElementById("centerCard");
+    const rainName = document.getElementById("rainName");
+    const floatLayer = document.getElementById("floatLayer");
+    const textWall = document.getElementById("textWall");
+
+    let W = window.innerWidth, H = window.innerHeight;
+    let mx = W * 0.5, my = H * 0.5;
+
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W; canvas.height = H;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const TEXT_ROWS = [
+      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
+      { text: "IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS", rev: true },
+      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
+      { text: "IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS", rev: true },
+      { text: "RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D", rev: false },
+      { text: "_RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA", rev: true },
+      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
+    ];
+
+    TEXT_ROWS.forEach(row => {
+      const div = document.createElement("div");
+      div.className = "text-row";
+      const span = document.createElement("span");
+      span.textContent = row.text + " \u00A0\u00A0 " + row.text;
+      div.appendChild(span);
+      textWall.appendChild(div);
+    });
+
+    const RAIN_COLORS = [
+      { color: "#c4b5fd", shadow: "rgba(196,181,253,0.85)" },
+      { color: "#f9a8d4", shadow: "rgba(249,168,212,0.85)" },
+      { color: "#6ee7b7", shadow: "rgba(110,231,183,0.85)" },
+      { color: "#fde68a", shadow: "rgba(253,230,138,0.85)" },
+      { color: "#93c5fd", shadow: "rgba(147,197,253,0.85)" },
+      { color: "#fb7185", shadow: "rgba(251,113,133,0.85)" },
+    ];
+    let rainIdx = 0;
+    function cycleRain() {
+      const c = RAIN_COLORS[rainIdx % RAIN_COLORS.length];
+      rainName.style.color = c.color;
+      rainName.style.textShadow = `0 0 20px ${c.shadow}, 0 0 55px ${c.shadow.replace("0.85","0.35")}`;
+      rainIdx++;
+    }
+    cycleRain();
+    setInterval(cycleRain, 2500);
+
+    const dots = Array.from({ length: 75 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.4 + 0.5,
+      a: Math.random() * 0.38 + 0.1
+    }));
+
+    function drawDots() {
+      ctx.clearRect(0, 0, W, H);
+      for (const d of dots) {
+        const ddx = mx - d.x, ddy = my - d.y;
+        const dist = Math.hypot(ddx, ddy) || 1;
+        const pull = Math.max(0, 1 - dist / 150) * 0.025;
+        d.vx += (ddx / dist) * pull; d.vy += (ddy / dist) * pull;
+        d.vx *= 0.989; d.vy *= 0.989;
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < -10) d.x = W + 10;
+        if (d.x > W + 10) d.x = -10;
+        if (d.y < -10) d.y = H + 10;
+        if (d.y > H + 10) d.y = -10;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(220,210,255,${d.a})`;
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const IMG_SRCS = [
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs1.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs2.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs3.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs4.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs5.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs6.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs7.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs8.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs9.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs10.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs11.jpg",
+      "https://github.com/hilcasm/HBRVS4.13/tree/main/mga-masasarap/rvs12.heif",
+    ];
+
+    const GLOW_COLORS_RAW = [
+      [196,181,253], [249,168,212], [110,231,183],
+      [253,230,138], [147,197,253], [251,113,133],
+    ];
+
+    const STAR_PTS = "50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35";
+    const ns = "http://www.w3.org/2000/svg";
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function getSize() { return Math.max(130, Math.min(210, W * 0.16)); }
+
+    const AVOID_R = 220;
+    const RETURN_SPRING = 0.012;
+    const RETURN_DAMP = 0.78;
+    const WOBBLE_DAMP = 0.80;
+    const margin = 24;
+
+    function randomHome(s) {
+      const topZone = H * 0.28;
+      const bottomZone = H * 0.72;
+      let hx, hy;
+      if (Math.random() < 0.5) {
+        hy = rnd(margin, topZone - s - margin);
+      } else {
+        hy = rnd(bottomZone, H - s - margin);
+      }
+      hx = rnd(margin, W - s - margin);
+      return { hx, hy };
+    }
+
+    const floats = IMG_SRCS.map((src, i) => {
+      const s = getSize();
+      const { hx, hy } = randomHome(s);
+
+      const wrap = document.createElement("div");
+      wrap.className = "float-wrap";
+      wrap.style.left = hx + "px";
+      wrap.style.top  = hy + "px";
+
+      const [r,g,b] = GLOW_COLORS_RAW[i % GLOW_COLORS_RAW.length];
+      const glowA = `rgba(${r},${g},${b},0.55)`;
+
+      const svgEl = document.createElementNS(ns, "svg");
+      svgEl.setAttribute("viewBox", "0 0 100 100");
+
+      const defs = document.createElementNS(ns, "defs");
+
+      const clipId = `sc${i}`;
+      const cp = document.createElementNS(ns, "clipPath");
+      cp.setAttribute("id", clipId);
+      const cpPoly = document.createElementNS(ns, "polygon");
+      cpPoly.setAttribute("points", STAR_PTS);
+      cp.appendChild(cpPoly);
+
+      const filterId = `gf${i}`;
+      const filt = document.createElementNS(ns, "filter");
+      filt.setAttribute("id", filterId);
+      filt.setAttribute("x", "-40%"); filt.setAttribute("y", "-40%");
+      filt.setAttribute("width", "180%"); filt.setAttribute("height", "180%");
+      const feG = document.createElementNS(ns, "feGaussianBlur");
+      feG.setAttribute("in", "SourceGraphic");
+      feG.setAttribute("stdDeviation", "5");
+      filt.appendChild(feG);
+
+      defs.appendChild(cp); defs.appendChild(filt);
+      svgEl.appendChild(defs);
+
+      const glowPoly = document.createElementNS(ns, "polygon");
+      glowPoly.setAttribute("points", STAR_PTS);
+      glowPoly.setAttribute("fill", glowA);
+      glowPoly.setAttribute("filter", `url(#${filterId})`);
+      svgEl.appendChild(glowPoly);
+
+      const imgEl = document.createElementNS(ns, "image");
+      imgEl.setAttribute("href", src);
+      imgEl.setAttribute("x", "0"); imgEl.setAttribute("y", "0");
+      imgEl.setAttribute("width", "100"); imgEl.setAttribute("height", "100");
+      imgEl.setAttribute("preserveAspectRatio", "xMidYMid slice");
+      imgEl.setAttribute("clip-path", `url(#${clipId})`);
+      svgEl.appendChild(imgEl);
+
+      const borderPoly = document.createElementNS(ns, "polygon");
+      borderPoly.setAttribute("points", STAR_PTS);
+      borderPoly.setAttribute("fill", "none");
+      borderPoly.setAttribute("stroke", glowA);
+      borderPoly.setAttribute("stroke-width", "1.8");
+      svgEl.appendChild(borderPoly);
+
+      wrap.appendChild(svgEl);
+      floatLayer.appendChild(wrap);
+
+      return {
+        wrap, hx, hy,
+        x: hx, y: hy,
+        vx: rnd(-0.15, 0.15),
+        vy: rnd(-0.15, 0.15),
+        phase: Math.random() * Math.PI * 2,
+        phaseY: Math.random() * Math.PI * 2,
+        idleAmpX: rnd(0.25, 0.55),
+        idleAmpY: rnd(0.25, 0.55),
+        idleSpeedX: rnd(0.0005, 0.0012),
+        idleSpeedY: rnd(0.0006, 0.0013),
+      };
+    });
+
+    let t = 0;
+    function tick() {
+      t++;
+      drawDots();
+      const s = getSize();
+
+      for (const f of floats) {
+        const cx = f.x + s * 0.5;
+        const cy = f.y + s * 0.5;
+        const dx = cx - mx, dy = cy - my;
+        const dist = Math.hypot(dx, dy) || 1;
+        const isFleeing = dist < AVOID_R;
+
+        if (isFleeing) {
+          const strength = ((AVOID_R - dist) / AVOID_R) * 0.6;
+          f.vx += (dx / dist) * strength;
+          f.vy += (dy / dist) * strength;
+          f.vx *= WOBBLE_DAMP;
+          f.vy *= WOBBLE_DAMP;
+          f.wrap.style.opacity = "0.95";
+        } else {
+          f.vx += (f.hx - f.x) * RETURN_SPRING;
+          f.vy += (f.hy - f.y) * RETURN_SPRING;
+          f.vx *= RETURN_DAMP;
+          f.vy *= RETURN_DAMP;
+
+          const idleX = Math.sin(t * f.idleSpeedX + f.phase) * f.idleAmpX;
+          const idleY = Math.cos(t * f.idleSpeedY + f.phaseY) * f.idleAmpY;
+          f.vx += idleX;
+          f.vy += idleY;
+          f.wrap.style.opacity = "0.72";
+        }
+
+        f.x += f.vx;
+        f.y += f.vy;
+
+        const maxX = W - s - margin, maxY = H - s - margin;
+        if (f.x < margin)  { f.x = margin;  f.vx *= -0.45; }
+        if (f.x > maxX)    { f.x = maxX;    f.vx *= -0.45; }
+        if (f.y < margin)  { f.y = margin;  f.vy *= -0.45; }
+        if (f.y > maxY)    { f.y = maxY;    f.vy *= -0.45; }
+
+        const tilt = Math.max(-10, Math.min(10, f.vx * 28));
+        f.wrap.style.transform = `rotate(${tilt.toFixed(2)}deg)`;
+        f.wrap.style.left = f.x.toFixed(1) + "px";
+        f.wrap.style.top  = f.y.toFixed(1) + "px";
+      }
+
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    window.addEventListener("mousemove", e => {
+      mx = e.clientX; my = e.clientY;
+      const rx = (e.clientX - W * 0.5) / (W * 0.5);
+      const ry = (e.clientY - H * 0.5) / (H * 0.5);
+      centerCard.style.transform = `translate(${rx * -10}px, ${ry * -7}px)`;
+    });
+
+    window.addEventListener("click", e => {
+      const r = document.createElement("span");
+      r.className = "ripple";
+      r.style.left = e.clientX + "px";
+      r.style.top  = e.clientY + "px";
+      document.body.appendChild(r);
+      setTimeout(() => r.remove(), 700);
+    });
+  </script>
+</body>
+</html>
