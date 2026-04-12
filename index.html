@@ -180,9 +180,169 @@
       border-color: rgba(196,181,253,0.5);
     }
 
+    #gb-toggle {
+      position: fixed;
+      top: 1.2rem;
+      left: 1.4rem;
+      z-index: 25;
+      background: rgba(196,181,253,0.08);
+      border: 1px solid rgba(196,181,253,0.25);
+      color: rgba(200,210,255,0.65);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    #gb-toggle:hover {
+      background: rgba(196,181,253,0.18);
+      color: rgba(220,210,255,0.95);
+      border-color: rgba(196,181,253,0.5);
+    }
+
+    #gb-panel {
+      position: fixed;
+      top: 4rem;
+      left: 1.4rem;
+      z-index: 24;
+      width: clamp(280px, 30vw, 380px);
+      background: rgba(6,3,14,0.94);
+      border: 1px solid rgba(196,181,253,0.22);
+      border-radius: 1.2rem;
+      backdrop-filter: blur(18px);
+      padding: 1.2rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.8rem;
+      max-height: calc(100vh - 6rem);
+    }
+
+    #gb-panel.open { display: flex; }
+
+    #gb-panel-title {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(196,181,253,0.55);
+      text-align: center;
+    }
+
+    #gb-msgs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      overflow-y: auto;
+      max-height: 260px;
+      padding-right: 4px;
+    }
+
+    #gb-msgs::-webkit-scrollbar { width: 3px; }
+    #gb-msgs::-webkit-scrollbar-thumb { background: rgba(196,181,253,0.25); border-radius: 2px; }
+
+    .gb-bubble {
+      background: rgba(196,181,253,0.06);
+      border: 1px solid rgba(196,181,253,0.12);
+      border-radius: 0.7rem;
+      padding: 0.5rem 0.75rem;
+      animation: bubbleIn 0.3s ease;
+    }
+
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .gb-bname {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .gb-btime {
+      font-size: 0.58rem;
+      color: rgba(200,210,255,0.28);
+      float: right;
+      margin-top: 1px;
+    }
+
+    .gb-btext {
+      font-size: 0.8rem;
+      color: rgba(241,240,251,0.82);
+      line-height: 1.45;
+      margin-top: 0.2rem;
+      word-break: break-word;
+    }
+
+    #gb-empty-msg {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(200,210,255,0.28);
+      padding: 1rem 0;
+      letter-spacing: 0.06em;
+    }
+
+    .gb-input {
+      background: rgba(196,181,253,0.06);
+      border: 1px solid rgba(196,181,253,0.18);
+      border-radius: 0.55rem;
+      color: rgba(241,240,251,0.9);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.8rem;
+      padding: 0.48rem 0.7rem;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+
+    .gb-input::placeholder { color: rgba(200,210,255,0.26); }
+    .gb-input:focus { border-color: rgba(196,181,253,0.45); }
+
+    textarea.gb-input { resize: none; }
+
+    #gb-send-btn {
+      background: rgba(196,181,253,0.1);
+      border: 1px solid rgba(196,181,253,0.28);
+      border-radius: 0.55rem;
+      color: rgba(196,181,253,0.88);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    #gb-send-btn:hover { background: rgba(196,181,253,0.2); border-color: rgba(196,181,253,0.5); }
+    #gb-send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    #gb-feedback {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      min-height: 0.85rem;
+      color: rgba(110,231,183,0.7);
+    }
+
+    #gb-count-label {
+      font-size: 0.58rem;
+      color: rgba(200,210,255,0.22);
+      text-align: center;
+      letter-spacing: 0.08em;
+    }
+
     @media (max-width: 600px) {
       .text-row { font-size: clamp(1rem, 6vw, 2rem); }
       .float-wrap { width: clamp(90px, 20vw, 140px); height: clamp(90px, 20vw, 140px); }
+      #gb-panel { width: calc(100vw - 2.8rem); }
     }
   </style>
 </head>
@@ -196,6 +356,17 @@
   </audio>
 
   <button id="music-btn">&#9654; play music</button>
+  <button id="gb-toggle">✦ messages</button>
+
+  <div id="gb-panel">
+    <p id="gb-panel-title">leave a message for rain ♡</p>
+    <div id="gb-msgs"><p id="gb-empty-msg">no messages yet — be the first!</p></div>
+    <input class="gb-input" type="text" id="gb-name" placeholder="your name" maxlength="32" />
+    <textarea class="gb-input" id="gb-msg" rows="2" placeholder="say something nice..." maxlength="280"></textarea>
+    <button id="gb-send-btn">send message</button>
+    <p id="gb-feedback"></p>
+    <p id="gb-count-label"></p>
+  </div>
 
   <main class="wrapper" id="scene">
     <div class="text-wall" id="textWall"></div>
@@ -230,6 +401,96 @@
         playing = false;
       }
     });
+
+    const gbToggle = document.getElementById("gb-toggle");
+    const gbPanel = document.getElementById("gb-panel");
+    const gbMsgs = document.getElementById("gb-msgs");
+    const gbEmptyMsg = document.getElementById("gb-empty-msg");
+    const gbNameEl = document.getElementById("gb-name");
+    const gbMsgEl = document.getElementById("gb-msg");
+    const gbSendBtn = document.getElementById("gb-send-btn");
+    const gbFeedback = document.getElementById("gb-feedback");
+    const gbCountLabel = document.getElementById("gb-count-label");
+
+    const GB_KEY = "hbd_rvs_413_messages";
+    const MSG_COLORS = ["#c4b5fd","#f9a8d4","#6ee7b7","#fde68a","#93c5fd","#fb7185"];
+
+    function colorFor(name) {
+      let h = 0;
+      for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+      return MSG_COLORS[h % MSG_COLORS.length];
+    }
+
+    function fmtTime(ts) {
+      const d = new Date(ts);
+      return d.toLocaleDateString("en-PH", { month: "short", day: "numeric" }) + " " +
+        d.toLocaleTimeString("en-PH", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function loadMessages() {
+      try {
+        return JSON.parse(localStorage.getItem(GB_KEY) || "[]");
+      } catch(e) { return []; }
+    }
+
+    function saveMessages(msgs) {
+      localStorage.setItem(GB_KEY, JSON.stringify(msgs));
+    }
+
+    function renderMessages() {
+      const msgs = loadMessages();
+      gbMsgs.innerHTML = "";
+      if (msgs.length === 0) {
+        gbMsgs.appendChild(gbEmptyMsg);
+        gbCountLabel.textContent = "";
+        return;
+      }
+      msgs.slice().reverse().forEach(m => {
+        const bub = document.createElement("div");
+        bub.className = "gb-bubble";
+        const col = colorFor(m.name);
+        bub.innerHTML =
+          '<span class="gb-btime">' + fmtTime(m.ts) + '</span>' +
+          '<span class="gb-bname" style="color:' + col + '">' + escHtml(m.name.toUpperCase()) + '</span>' +
+          '<p class="gb-btext">' + escHtml(m.text) + '</p>';
+        gbMsgs.appendChild(bub);
+      });
+      gbCountLabel.textContent = msgs.length + (msgs.length === 1 ? " message" : " messages");
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    function setFeedback(msg, isErr) {
+      gbFeedback.textContent = msg;
+      gbFeedback.style.color = isErr ? "rgba(251,113,133,0.8)" : "rgba(110,231,183,0.75)";
+      if (msg) setTimeout(() => { gbFeedback.textContent = ""; }, 2800);
+    }
+
+    gbToggle.addEventListener("click", () => {
+      gbPanel.classList.toggle("open");
+      if (gbPanel.classList.contains("open")) renderMessages();
+    });
+
+    gbSendBtn.addEventListener("click", sendMsg);
+    gbMsgEl.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+    });
+
+    function sendMsg() {
+      const name = gbNameEl.value.trim();
+      const text = gbMsgEl.value.trim();
+      if (!name) { setFeedback("enter your name!", true); gbNameEl.focus(); return; }
+      if (!text) { setFeedback("write something first!", true); gbMsgEl.focus(); return; }
+      const msgs = loadMessages();
+      msgs.push({ name, text, ts: Date.now() });
+      saveMessages(msgs);
+      gbMsgEl.value = "";
+      renderMessages();
+      setFeedback("message sent! ✦", false);
+      gbMsgs.scrollTop = 0;
+    }
 
     let W = window.innerWidth, H = window.innerHeight;
     let mx = W * 0.5, my = H * 0.5;
@@ -307,23 +568,14 @@
     }
 
     const IMG_SRCS = [
-      "rvs1.jpg",
-      "rvs2.jpg",
-      "rvs3.jpg",
-      "rvs4.jpg",
-      "rvs5.jpg",
-      "rvs6.jpg",
-      "rvs7.jpg",
-      "rvs8.jpg",
-      "rvs9.jpg",
-      "rvs10.jpg",
-      "rvs11.jpg",
-      "rvs12.jpg",
+      "rvs1.jpg","rvs2.jpg","rvs3.jpg","rvs4.jpg",
+      "rvs5.jpg","rvs6.jpg","rvs7.jpg","rvs8.jpg",
+      "rvs9.jpg","rvs10.jpg","rvs11.jpg","rvs12.jpg",
     ];
 
     const GLOW_COLORS_RAW = [
-      [196,181,253], [249,168,212], [110,231,183],
-      [253,230,138], [147,197,253], [251,113,133],
+      [196,181,253],[249,168,212],[110,231,183],
+      [253,230,138],[147,197,253],[251,113,133],
     ];
 
     const STAR_PTS = "50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35";
@@ -354,7 +606,6 @@
 
         for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
           let hx, hy;
-
           if (Math.random() < 0.5) {
             hy = rnd(margin, topZone - s - margin);
           } else {
@@ -530,6 +781,7 @@
     });
 
     window.addEventListener("click", e => {
+      if (e.target.closest("#gb-panel") || e.target.closest("#gb-toggle")) return;
       const r = document.createElement("span");
       r.className = "ripple";
       r.style.left = e.clientX + "px";
@@ -538,6 +790,5 @@
       setTimeout(() => r.remove(), 700);
     });
   </script>
-
 </body>
 </html>
