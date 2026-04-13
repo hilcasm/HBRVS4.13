@@ -14,8 +14,6 @@
       --c4: #fde68a;
       --c5: #93c5fd;
       --c6: #fb7185;
-      --c7: #a78bfa;
-      --c8: #34d399;
       --text: #f1f0fb;
     }
 
@@ -29,21 +27,20 @@
       background: var(--bg-deep);
     }
 
-    .bg-nebula {
-      position: fixed; inset: 0; z-index: -2;
-      background: var(--bg-deep);
+    #nebulaCanvas {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
     }
 
-    #nebulaCanvas {
-      position: fixed; inset: 0; z-index: -1;
-      pointer-events: none;
+    #particles {
+      position: fixed; inset: 0; pointer-events: none; z-index: 1;
     }
 
     .scanlines {
       position: fixed; inset: 0; pointer-events: none;
       background: repeating-linear-gradient(
         to bottom,
-        rgba(255,255,255,0.012) 0 1px,
+        rgba(255,255,255,0.013) 0 1px,
         transparent 1px 3px
       );
       z-index: 18;
@@ -58,34 +55,26 @@
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
       justify-content: center; align-items: center;
-      font-weight: 900;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      line-height: 1.12;
+      font-weight: 900; letter-spacing: 0.09em;
+      text-transform: uppercase; line-height: 1.12;
       pointer-events: none; user-select: none;
-      z-index: 0;
-      overflow: hidden;
+      z-index: 2; overflow: hidden;
     }
 
     .text-row {
-      width: 100%;
-      text-align: center;
+      width: 100%; text-align: center;
       font-size: clamp(1.1rem, 3.2vw, 3.4rem);
-      white-space: nowrap;
-      overflow: hidden;
+      white-space: nowrap; overflow: hidden;
     }
-
     .text-row span { display: inline; font-family: 'Bebas Neue', sans-serif; }
 
-    .text-row:nth-child(1) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7); opacity: 0.7; }
-    .text-row:nth-child(2) span { color: var(--c5); text-shadow: 0 0 14px rgba(147,197,253,1), 0 0 40px rgba(147,197,253,0.7); opacity: 0.65; }
-    .text-row:nth-child(3) span { color: var(--c3); text-shadow: 0 0 14px rgba(110,231,183,1), 0 0 40px rgba(110,231,183,0.7); opacity: 0.68; }
-    .text-row:nth-child(4) span { color: var(--c4); text-shadow: 0 0 14px rgba(253,230,138,1), 0 0 40px rgba(253,230,138,0.7); opacity: 0.7; }
-    .text-row:nth-child(5) span { color: var(--c2); text-shadow: 0 0 14px rgba(249,168,212,1), 0 0 40px rgba(249,168,212,0.7); opacity: 0.65; }
-    .text-row:nth-child(6) span { color: var(--c6); text-shadow: 0 0 14px rgba(251,113,133,1), 0 0 40px rgba(251,113,133,0.7); opacity: 0.68; }
-    .text-row:nth-child(7) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.7); opacity: 0.65; }
-
-    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .text-row:nth-child(1) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.6); opacity: 0.55; }
+    .text-row:nth-child(2) span { color: var(--c5); text-shadow: 0 0 14px rgba(147,197,253,1), 0 0 40px rgba(147,197,253,0.6); opacity: 0.5; }
+    .text-row:nth-child(3) span { color: var(--c3); text-shadow: 0 0 14px rgba(110,231,183,1), 0 0 40px rgba(110,231,183,0.6); opacity: 0.52; }
+    .text-row:nth-child(4) span { color: var(--c4); text-shadow: 0 0 14px rgba(253,230,138,1), 0 0 40px rgba(253,230,138,0.6); opacity: 0.55; }
+    .text-row:nth-child(5) span { color: var(--c2); text-shadow: 0 0 14px rgba(249,168,212,1), 0 0 40px rgba(249,168,212,0.6); opacity: 0.5; }
+    .text-row:nth-child(6) span { color: var(--c6); text-shadow: 0 0 14px rgba(251,113,133,1), 0 0 40px rgba(251,113,133,0.6); opacity: 0.52; }
+    .text-row:nth-child(7) span { color: var(--c1); text-shadow: 0 0 14px rgba(196,181,253,1), 0 0 40px rgba(196,181,253,0.6); opacity: 0.5; }
 
     .floating-images { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 
@@ -94,44 +83,33 @@
       width: clamp(120px, 14vw, 190px);
       height: clamp(120px, 14vw, 190px);
       will-change: transform, left, top;
-      transition: opacity 0.6s ease;
     }
-
-    .float-wrap svg {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      overflow: visible;
-    }
+    .float-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 
     .center-card {
       position: relative; z-index: 6;
       text-align: center; pointer-events: none;
       will-change: transform;
-      padding: 2.5rem 3.5rem;
-      border-radius: 2rem;
+      padding: 2.5rem 3.5rem; border-radius: 2rem;
     }
-
     .center-card::before {
       content: '';
-      position: absolute; inset: -20px;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(4,2,12,0.92) 0%, transparent 100%);
-      border-radius: 3rem;
-      z-index: -1;
+      position: absolute; inset: -30px;
+      background: radial-gradient(ellipse 75% 55% at 50% 50%, rgba(4,2,12,0.88) 0%, transparent 100%);
+      border-radius: 3rem; z-index: -1;
     }
 
     .hb-main {
       display: block;
       font-family: 'Cinzel Decorative', serif;
       font-size: clamp(1.4rem, 5vw, 4.8rem);
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      line-height: 1.1;
+      font-weight: 900; letter-spacing: 0.04em;
+      text-transform: uppercase; line-height: 1.15;
       color: #ffffff;
       text-shadow:
         0 0 20px rgba(196,181,253,1),
-        0 0 50px rgba(196,181,253,0.6),
-        0 0 100px rgba(196,181,253,0.3),
+        0 0 55px rgba(196,181,253,0.55),
+        0 0 110px rgba(196,181,253,0.25),
         0 2px 6px rgba(0,0,0,0.95);
     }
 
@@ -144,9 +122,8 @@
       margin-top: 0.75rem;
       font-family: 'Space Mono', monospace;
       font-size: clamp(0.6rem, 1.1vw, 0.85rem);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(200,210,255,0.4);
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(200,210,255,0.38);
     }
 
     .lyric {
@@ -154,7 +131,7 @@
       transform: translateX(-50%);
       font-size: clamp(0.65rem, 1.1vw, 0.82rem);
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(210,220,255,0.35);
+      color: rgba(210,220,255,0.3);
       z-index: 9; pointer-events: none; white-space: nowrap;
       font-family: 'Space Mono', monospace;
     }
@@ -164,60 +141,49 @@
       width: 16px; height: 16px;
       margin-left: -8px; margin-top: -8px;
       border-radius: 50%;
-      border: 1.5px solid rgba(196,181,253,0.55);
+      border: 1.5px solid rgba(196,181,253,0.5);
       pointer-events: none;
       animation: ripple 700ms cubic-bezier(0.2,0.8,0.4,1) forwards;
       z-index: 30;
     }
-
     @keyframes ripple {
-      from { transform: scale(1); opacity: 0.8; }
-      to   { transform: scale(11); opacity: 0; }
+      from { transform: scale(1); opacity: 0.75; }
+      to   { transform: scale(12); opacity: 0; }
     }
 
     #music-btn {
       position: fixed; top: 1.2rem; right: 1.4rem; z-index: 20;
-      background: rgba(196,181,253,0.07);
-      border: 1px solid rgba(196,181,253,0.22);
-      color: rgba(200,210,255,0.6);
-      font-family: 'Space Mono', monospace;
+      background: rgba(196,181,253,0.07); border: 1px solid rgba(196,181,253,0.22);
+      color: rgba(200,210,255,0.6); font-family: 'Space Mono', monospace;
       font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
       padding: 0.45rem 1rem; border-radius: 2rem; cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      backdrop-filter: blur(8px); transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
     #music-btn:hover { background: rgba(196,181,253,0.16); color: rgba(220,210,255,0.95); border-color: rgba(196,181,253,0.45); }
 
     #gb-toggle {
       position: fixed; top: 1.2rem; left: 1.4rem; z-index: 25;
-      background: rgba(196,181,253,0.07);
-      border: 1px solid rgba(196,181,253,0.22);
-      color: rgba(200,210,255,0.6);
-      font-family: 'Space Mono', monospace;
+      background: rgba(196,181,253,0.07); border: 1px solid rgba(196,181,253,0.22);
+      color: rgba(200,210,255,0.6); font-family: 'Space Mono', monospace;
       font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
       padding: 0.45rem 1rem; border-radius: 2rem; cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      backdrop-filter: blur(8px); transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
     #gb-toggle:hover { background: rgba(196,181,253,0.16); color: rgba(220,210,255,0.95); border-color: rgba(196,181,253,0.45); }
 
     #gb-panel {
       position: fixed; top: 4rem; left: 1.4rem; z-index: 24;
-      width: clamp(300px, 32vw, 400px);
-      background: rgba(4,2,12,0.96);
-      border: 1px solid rgba(196,181,253,0.2);
-      border-radius: 1.4rem;
-      backdrop-filter: blur(24px);
-      padding: 1.3rem;
-      display: none; flex-direction: column; gap: 0.85rem;
+      width: clamp(290px, 30vw, 380px);
+      background: rgba(4,2,12,0.96); border: 1px solid rgba(196,181,253,0.2);
+      border-radius: 1.4rem; backdrop-filter: blur(24px);
+      padding: 1.3rem; display: none; flex-direction: column; gap: 0.85rem;
       max-height: calc(100vh - 6rem);
     }
     #gb-panel.open { display: flex; }
 
     #gb-panel-title {
       font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(196,181,253,0.5); text-align: center;
-      font-family: 'Space Mono', monospace;
+      color: rgba(196,181,253,0.5); text-align: center; font-family: 'Space Mono', monospace;
     }
 
     #gb-msgs {
@@ -228,10 +194,8 @@
     #gb-msgs::-webkit-scrollbar-thumb { background: rgba(196,181,253,0.22); border-radius: 2px; }
 
     .gb-bubble {
-      background: rgba(196,181,253,0.05);
-      border: 1px solid rgba(196,181,253,0.1);
-      border-radius: 0.8rem;
-      padding: 0.55rem 0.8rem;
+      background: rgba(196,181,253,0.05); border: 1px solid rgba(196,181,253,0.1);
+      border-radius: 0.8rem; padding: 0.55rem 0.8rem;
       animation: bubbleIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
     @keyframes bubbleIn {
@@ -242,7 +206,6 @@
     .gb-bname { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Space Mono', monospace; }
     .gb-btime { font-size: 0.56rem; color: rgba(200,210,255,0.25); float: right; margin-top: 1px; font-family: 'Space Mono', monospace; }
     .gb-btext { font-size: 0.78rem; color: rgba(241,240,251,0.8); line-height: 1.5; margin-top: 0.25rem; word-break: break-word; font-family: 'Space Mono', monospace; }
-    .gb-gif-preview { max-width: 100%; max-height: 160px; border-radius: 0.5rem; margin-top: 0.4rem; display: block; }
 
     #gb-empty-msg {
       text-align: center; font-size: 0.72rem; color: rgba(200,210,255,0.25);
@@ -250,88 +213,20 @@
     }
 
     .gb-input {
-      background: rgba(196,181,253,0.05);
-      border: 1px solid rgba(196,181,253,0.16);
-      border-radius: 0.6rem;
-      color: rgba(241,240,251,0.9);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.76rem; padding: 0.5rem 0.75rem; outline: none; width: 100%;
-      transition: border-color 0.2s;
+      background: rgba(196,181,253,0.05); border: 1px solid rgba(196,181,253,0.16);
+      border-radius: 0.6rem; color: rgba(241,240,251,0.9);
+      font-family: 'Space Mono', monospace; font-size: 0.76rem;
+      padding: 0.5rem 0.75rem; outline: none; width: 100%; transition: border-color 0.2s;
     }
     .gb-input::placeholder { color: rgba(200,210,255,0.22); }
     .gb-input:focus { border-color: rgba(196,181,253,0.4); }
     textarea.gb-input { resize: none; }
 
-    .gb-row { display: flex; gap: 0.5rem; }
-
-    #gb-gif-btn {
-      background: rgba(196,181,253,0.07);
-      border: 1px solid rgba(196,181,253,0.2);
-      border-radius: 0.6rem;
-      color: rgba(196,181,253,0.75);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.5rem 0.8rem; cursor: pointer; white-space: nowrap;
-      transition: background 0.2s;
-    }
-    #gb-gif-btn:hover { background: rgba(196,181,253,0.16); }
-
-    #gif-picker {
-      background: rgba(4,2,12,0.98);
-      border: 1px solid rgba(196,181,253,0.18);
-      border-radius: 0.8rem;
-      padding: 0.6rem;
-      display: none; flex-direction: column; gap: 0.5rem;
-    }
-    #gif-picker.open { display: flex; }
-
-    #gif-search-input {
-      background: rgba(196,181,253,0.05);
-      border: 1px solid rgba(196,181,253,0.16);
-      border-radius: 0.5rem;
-      color: rgba(241,240,251,0.9);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem; padding: 0.45rem 0.65rem; outline: none; width: 100%;
-    }
-    #gif-search-input::placeholder { color: rgba(200,210,255,0.22); }
-
-    #gif-results {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem;
-      max-height: 180px; overflow-y: auto;
-    }
-    #gif-results::-webkit-scrollbar { width: 3px; }
-    #gif-results::-webkit-scrollbar-thumb { background: rgba(196,181,253,0.2); border-radius: 2px; }
-
-    .gif-item {
-      border-radius: 0.4rem; overflow: hidden; cursor: pointer;
-      aspect-ratio: 1; background: rgba(196,181,253,0.05);
-      transition: transform 0.15s, opacity 0.15s;
-      border: 1px solid transparent;
-    }
-    .gif-item:hover { transform: scale(1.05); border-color: rgba(196,181,253,0.35); }
-    .gif-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .gif-item.selected { border-color: rgba(110,231,183,0.6); }
-
-    #gif-loading { text-align: center; font-size: 0.65rem; color: rgba(200,210,255,0.3); padding: 0.8rem; font-family: 'Space Mono', monospace; letter-spacing: 0.08em; }
-
-    .gif-selected-preview {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: rgba(110,231,183,0.06);
-      border: 1px solid rgba(110,231,183,0.2);
-      border-radius: 0.6rem; padding: 0.4rem 0.6rem;
-    }
-    .gif-selected-preview img { width: 42px; height: 42px; object-fit: cover; border-radius: 0.3rem; }
-    .gif-selected-preview span { font-size: 0.62rem; color: rgba(110,231,183,0.7); letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Space Mono', monospace; flex: 1; }
-    .gif-clear-btn { background: none; border: none; color: rgba(251,113,133,0.6); cursor: pointer; font-size: 0.8rem; padding: 0.1rem 0.3rem; }
-    .gif-clear-btn:hover { color: rgba(251,113,133,1); }
-
     #gb-send-btn {
-      background: rgba(196,181,253,0.09);
-      border: 1px solid rgba(196,181,253,0.25);
-      border-radius: 0.6rem;
-      color: rgba(196,181,253,0.85);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase;
+      background: rgba(196,181,253,0.09); border: 1px solid rgba(196,181,253,0.25);
+      border-radius: 0.6rem; color: rgba(196,181,253,0.85);
+      font-family: 'Space Mono', monospace; font-size: 0.66rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
       padding: 0.52rem; width: 100%; cursor: pointer;
       transition: background 0.2s, border-color 0.2s;
     }
@@ -357,7 +252,6 @@
   </style>
 </head>
 <body>
-  <div class="bg-nebula"></div>
   <canvas id="nebulaCanvas"></canvas>
   <canvas id="particles"></canvas>
   <div class="scanlines"></div>
@@ -373,20 +267,7 @@
     <p id="gb-panel-title">leave a message for rain ♡</p>
     <div id="gb-msgs"><p id="gb-empty-msg">no messages yet — be the first!</p></div>
     <input class="gb-input" type="text" id="gb-name" placeholder="your name" maxlength="32" />
-    <div class="gb-row">
-      <textarea class="gb-input" id="gb-msg" rows="2" placeholder="say something nice..." maxlength="280"></textarea>
-      <button id="gb-gif-btn">GIF</button>
-    </div>
-    <div id="gif-picker">
-      <input type="text" id="gif-search-input" placeholder="search gifs..." />
-      <div id="gif-loading" style="display:none">searching...</div>
-      <div id="gif-results"></div>
-    </div>
-    <div id="gif-selected-wrap" style="display:none" class="gif-selected-preview">
-      <img id="gif-selected-img" src="" alt="selected gif" />
-      <span>gif selected</span>
-      <button class="gif-clear-btn" id="gif-clear-btn">✕</button>
-    </div>
+    <textarea class="gb-input" id="gb-msg" rows="2" placeholder="say something nice..." maxlength="280"></textarea>
     <button id="gb-send-btn">send message</button>
     <p id="gb-feedback"></p>
     <p id="gb-count-label"></p>
@@ -404,18 +285,26 @@
   <p class="lyric">"I'm in the middle of your picture, lying in the reeds."</p>
 
   <script type="module">
-    const TENOR_KEY = "AIzaSyAyimkuYQYF_FSpMx_R3d3ngENMcM2wfX8";
-
     const nebulaCanvas = document.getElementById("nebulaCanvas");
     const nCtx = nebulaCanvas.getContext("2d");
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
+    const particleCanvas = document.getElementById("particles");
+    const pCtx = particleCanvas.getContext("2d");
     const centerCard = document.getElementById("centerCard");
     const rainName = document.getElementById("rainName");
     const floatLayer = document.getElementById("floatLayer");
     const textWall = document.getElementById("textWall");
     const bgMusic = document.getElementById("bgMusic");
     const musicBtn = document.getElementById("music-btn");
+
+    let W = window.innerWidth, H = window.innerHeight;
+
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      nebulaCanvas.width = W; nebulaCanvas.height = H;
+      particleCanvas.width = W; particleCanvas.height = H;
+    }
+    resize();
+    window.addEventListener("resize", resize);
 
     let playing = false;
     musicBtn.addEventListener("click", () => {
@@ -432,70 +321,6 @@
     const gbSendBtn = document.getElementById("gb-send-btn");
     const gbFeedback = document.getElementById("gb-feedback");
     const gbCountLabel = document.getElementById("gb-count-label");
-    const gbGifBtn = document.getElementById("gb-gif-btn");
-    const gifPicker = document.getElementById("gif-picker");
-    const gifSearchInput = document.getElementById("gif-search-input");
-    const gifResults = document.getElementById("gif-results");
-    const gifLoading = document.getElementById("gif-loading");
-    const gifSelectedWrap = document.getElementById("gif-selected-wrap");
-    const gifSelectedImg = document.getElementById("gif-selected-img");
-    const gifClearBtn = document.getElementById("gif-clear-btn");
-
-    let selectedGifUrl = null;
-    let gifSearchTimeout = null;
-
-    gbGifBtn.addEventListener("click", () => { gifPicker.classList.toggle("open"); if (gifPicker.classList.contains("open")) loadTrendingGifs(); });
-    gifClearBtn.addEventListener("click", () => { selectedGifUrl = null; gifSelectedWrap.style.display = "none"; document.querySelectorAll(".gif-item.selected").forEach(el => el.classList.remove("selected")); });
-
-    async function loadTrendingGifs() {
-      gifLoading.style.display = "block"; gifResults.innerHTML = "";
-      try {
-        const r = await fetch(`https://tenor.googleapis.com/v2/featured?key=${TENOR_KEY}&limit=18&media_filter=gif`);
-        const d = await r.json();
-        renderGifs(d.results || []);
-      } catch(e) { gifLoading.textContent = "couldn't load gifs :("; }
-      gifLoading.style.display = "none";
-    }
-
-    async function searchGifs(q) {
-      gifLoading.style.display = "block"; gifResults.innerHTML = "";
-      try {
-        const r = await fetch(`https://tenor.googleapis.com/v2/search?key=${TENOR_KEY}&q=${encodeURIComponent(q)}&limit=18&media_filter=gif`);
-        const d = await r.json();
-        renderGifs(d.results || []);
-      } catch(e) { gifLoading.textContent = "search failed :("; }
-      gifLoading.style.display = "none";
-    }
-
-    function renderGifs(results) {
-      gifResults.innerHTML = "";
-      results.forEach(r => {
-        const url = r.media_formats?.gif?.url || r.media_formats?.tinygif?.url;
-        const preview = r.media_formats?.tinygif?.url || url;
-        if (!url) return;
-        const item = document.createElement("div");
-        item.className = "gif-item";
-        const img = document.createElement("img");
-        img.src = preview; img.loading = "lazy";
-        item.appendChild(img);
-        item.addEventListener("click", () => {
-          document.querySelectorAll(".gif-item.selected").forEach(el => el.classList.remove("selected"));
-          item.classList.add("selected");
-          selectedGifUrl = url;
-          gifSelectedImg.src = preview;
-          gifSelectedWrap.style.display = "flex";
-          gifPicker.classList.remove("open");
-        });
-        gifResults.appendChild(item);
-      });
-    }
-
-    gifSearchInput.addEventListener("input", () => {
-      clearTimeout(gifSearchTimeout);
-      const q = gifSearchInput.value.trim();
-      if (!q) { loadTrendingGifs(); return; }
-      gifSearchTimeout = setTimeout(() => searchGifs(q), 480);
-    });
 
     const MSG_COLORS = ["#c4b5fd","#f9a8d4","#6ee7b7","#fde68a","#93c5fd","#fb7185"];
     function colorFor(name) {
@@ -514,7 +339,6 @@
       gbFeedback.style.color = isErr ? "rgba(251,113,133,0.8)" : "rgba(110,231,183,0.75)";
       if (msg) setTimeout(() => { gbFeedback.textContent = ""; }, 2800);
     }
-
     function renderMessages(msgs) {
       gbMsgs.innerHTML = "";
       if (!msgs || msgs.length === 0) { gbMsgs.appendChild(gbEmptyMsg); gbCountLabel.textContent = ""; return; }
@@ -526,8 +350,7 @@
         bub.innerHTML =
           '<span class="gb-btime">' + fmtTime(ts) + '</span>' +
           '<span class="gb-bname" style="color:' + col + '">' + escHtml(m.name.toUpperCase()) + '</span>' +
-          '<p class="gb-btext">' + escHtml(m.text || "") + '</p>' +
-          (m.gifUrl ? '<img class="gb-gif-preview" src="' + escHtml(m.gifUrl) + '" alt="gif" />' : "");
+          '<p class="gb-btext">' + escHtml(m.text) + '</p>';
         gbMsgs.appendChild(bub);
       });
       gbCountLabel.textContent = msgs.length + (msgs.length === 1 ? " message" : " messages");
@@ -552,21 +375,15 @@
         gbToggle.addEventListener("click", () => { gbPanel.classList.toggle("open"); });
         gbSendBtn.addEventListener("click", sendMsg);
         gbMsgEl.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
-
         async function sendMsg() {
           const name = gbNameEl.value.trim();
           const text = gbMsgEl.value.trim();
           if (!name) { setFeedback("enter your name!", true); gbNameEl.focus(); return; }
-          if (!text && !selectedGifUrl) { setFeedback("write something or pick a gif!", true); gbMsgEl.focus(); return; }
+          if (!text) { setFeedback("write something first!", true); gbMsgEl.focus(); return; }
           gbSendBtn.disabled = true;
           try {
-            const payload = { name, text: text || "", ts: serverTimestamp() };
-            if (selectedGifUrl) payload.gifUrl = selectedGifUrl;
-            await addDoc(colRef, payload);
+            await addDoc(colRef, { name, text, ts: serverTimestamp() });
             gbMsgEl.value = "";
-            selectedGifUrl = null;
-            gifSelectedWrap.style.display = "none";
-            document.querySelectorAll(".gif-item.selected").forEach(el => el.classList.remove("selected"));
             setFeedback("message sent! ✦", false);
           } catch(e) { setFeedback("something went wrong :(", true); }
           gbSendBtn.disabled = false;
@@ -574,62 +391,20 @@
       });
     });
 
-    let W = window.innerWidth, H = window.innerHeight;
-    let mx = W * 0.5, my = H * 0.5;
-
-    function resize() {
-      W = window.innerWidth; H = window.innerHeight;
-      canvas.width = W; canvas.height = H;
-      nebulaCanvas.width = W; nebulaCanvas.height = H;
-      drawNebula();
-    }
-    resize();
-    window.addEventListener("resize", () => { resize(); });
-
-    function drawNebula() {
-      nCtx.clearRect(0, 0, W, H);
-      const blobs = [
-        { x: W * 0.12, y: H * 0.18, rx: W * 0.38, ry: H * 0.32, r: [139,92,246], a: 0.28 },
-        { x: W * 0.88, y: H * 0.78, rx: W * 0.32, ry: H * 0.28, r: [236,72,153], a: 0.24 },
-        { x: W * 0.5,  y: H * 0.5,  rx: W * 0.5,  ry: H * 0.4,  r: [16,10,35],   a: 0.6  },
-        { x: W * 0.75, y: H * 0.2,  rx: W * 0.3,  ry: H * 0.25, r: [56,189,248], a: 0.18 },
-        { x: W * 0.25, y: H * 0.82, rx: W * 0.28, ry: H * 0.22, r: [52,211,153], a: 0.16 },
-        { x: W * 0.92, y: H * 0.35, rx: W * 0.22, ry: H * 0.3,  r: [251,191,36], a: 0.13 },
-        { x: W * 0.08, y: H * 0.62, rx: W * 0.2,  ry: H * 0.28, r: [251,113,133],a: 0.15 },
-        { x: W * 0.55, y: H * 0.12, rx: W * 0.25, ry: H * 0.2,  r: [167,139,250],a: 0.17 },
-      ];
-      for (const b of blobs) {
-        const g = nCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, Math.max(b.rx, b.ry));
-        g.addColorStop(0, `rgba(${b.r[0]},${b.r[1]},${b.r[2]},${b.a})`);
-        g.addColorStop(0.5, `rgba(${b.r[0]},${b.r[1]},${b.r[2]},${b.a * 0.4})`);
-        g.addColorStop(1, `rgba(${b.r[0]},${b.r[1]},${b.r[2]},0)`);
-        nCtx.save();
-        nCtx.translate(b.x, b.y);
-        nCtx.scale(b.rx / Math.max(b.rx, b.ry), b.ry / Math.max(b.rx, b.ry));
-        nCtx.translate(-b.x, -b.y);
-        nCtx.fillStyle = g;
-        nCtx.beginPath();
-        nCtx.arc(b.x, b.y, Math.max(b.rx, b.ry), 0, Math.PI * 2);
-        nCtx.fill();
-        nCtx.restore();
-      }
-    }
-
     const TEXT_ROWS = [
-      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
-      { text: "IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS", rev: true },
-      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
-      { text: "IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS", rev: true },
-      { text: "RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D", rev: false },
-      { text: "_RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA", rev: true },
-      { text: "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY", rev: false },
+      "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY",
+      "IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS IN RAIN/BOWS",
+      "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY",
+      "IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS / IN RAINBOWS",
+      "RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D RA D'IOHEA D",
+      "_RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA D _RAD IO HEA",
+      "HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY RAIN HAPPY BIRTHDAY",
     ];
-
-    TEXT_ROWS.forEach(row => {
+    TEXT_ROWS.forEach(text => {
       const div = document.createElement("div");
       div.className = "text-row";
       const span = document.createElement("span");
-      span.textContent = row.text + " \u00A0\u00A0 " + row.text;
+      span.textContent = text + " \u00A0\u00A0 " + text;
       div.appendChild(span);
       textWall.appendChild(div);
     });
@@ -652,16 +427,63 @@
     cycleRain();
     setInterval(cycleRain, 2800);
 
+    const NEBULA_BLOBS = [
+      { bx: 0.10, by: 0.15, rx: 0.44, ry: 0.40, r: 139, g: 92,  b: 246, a: 0.30, sx: 0.00008, sy: 0.00006, phase: 0.0 },
+      { bx: 0.88, by: 0.80, rx: 0.40, ry: 0.34, r: 236, g: 72,  b: 153, a: 0.26, sx: 0.00010, sy: 0.00008, phase: 1.2 },
+      { bx: 0.72, by: 0.18, rx: 0.32, ry: 0.28, r: 56,  g: 189, b: 248, a: 0.22, sx: 0.00007, sy: 0.00009, phase: 2.4 },
+      { bx: 0.22, by: 0.82, rx: 0.30, ry: 0.26, r: 52,  g: 211, b: 153, a: 0.20, sx: 0.00009, sy: 0.00006, phase: 3.6 },
+      { bx: 0.93, by: 0.40, rx: 0.26, ry: 0.32, r: 251, g: 191, b: 36,  a: 0.17, sx: 0.00007, sy: 0.00009, phase: 0.8 },
+      { bx: 0.05, by: 0.55, rx: 0.24, ry: 0.30, r: 251, g: 113, b: 133, a: 0.19, sx: 0.00009, sy: 0.00007, phase: 2.0 },
+      { bx: 0.50, by: 0.07, rx: 0.28, ry: 0.22, r: 167, g: 139, b: 250, a: 0.18, sx: 0.00006, sy: 0.00010, phase: 4.2 },
+      { bx: 0.48, by: 0.93, rx: 0.34, ry: 0.24, r: 249, g: 168, b: 212, a: 0.16, sx: 0.00010, sy: 0.00007, phase: 1.7 },
+      { bx: 0.35, by: 0.40, rx: 0.20, ry: 0.18, r: 99,  g: 230, b: 190, a: 0.12, sx: 0.00005, sy: 0.00008, phase: 5.1 },
+    ];
+
+    let frameT = 0;
+
+    function drawNebula() {
+      nCtx.fillStyle = "#04020c";
+      nCtx.fillRect(0, 0, W, H);
+
+      for (const nb of NEBULA_BLOBS) {
+        const wobX = Math.sin(frameT * nb.sx * 800 + nb.phase) * W * 0.035;
+        const wobY = Math.cos(frameT * nb.sy * 800 + nb.phase + 1.3) * H * 0.035;
+        const cx = nb.bx * W + wobX;
+        const cy = nb.by * H + wobY;
+        const radX = nb.rx * W;
+        const radY = nb.ry * H;
+        const maxR = Math.max(radX, radY);
+
+        const grad = nCtx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+        grad.addColorStop(0,   `rgba(${nb.r},${nb.g},${nb.b},${nb.a})`);
+        grad.addColorStop(0.45,`rgba(${nb.r},${nb.g},${nb.b},${(nb.a * 0.45).toFixed(3)})`);
+        grad.addColorStop(1,   `rgba(${nb.r},${nb.g},${nb.b},0)`);
+
+        nCtx.save();
+        nCtx.translate(cx, cy);
+        nCtx.scale(radX / maxR, radY / maxR);
+        nCtx.translate(-cx, -cy);
+        nCtx.fillStyle = grad;
+        nCtx.beginPath();
+        nCtx.arc(cx, cy, maxR, 0, Math.PI * 2);
+        nCtx.fill();
+        nCtx.restore();
+      }
+    }
+
     const dots = Array.from({ length: 100 }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
       vx: (Math.random() - 0.5) * 0.22,
       vy: (Math.random() - 0.5) * 0.22,
       r: Math.random() * 1.6 + 0.4,
-      a: Math.random() * 0.32 + 0.08
+      a: Math.random() * 0.3 + 0.08
     }));
 
+    let mx = window.innerWidth * 0.5, my = window.innerHeight * 0.5;
+
     function drawDots() {
-      ctx.clearRect(0, 0, W, H);
+      pCtx.clearRect(0, 0, W, H);
       for (const d of dots) {
         const ddx = mx - d.x, ddy = my - d.y;
         const dist = Math.hypot(ddx, ddy) || 1;
@@ -669,14 +491,12 @@
         d.vx += (ddx / dist) * pull; d.vy += (ddy / dist) * pull;
         d.vx *= 0.991; d.vy *= 0.991;
         d.x += d.vx; d.y += d.vy;
-        if (d.x < -10) d.x = W + 10;
-        if (d.x > W + 10) d.x = -10;
-        if (d.y < -10) d.y = H + 10;
-        if (d.y > H + 10) d.y = -10;
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(220,210,255,${d.a})`;
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fill();
+        if (d.x < -10) d.x = W + 10; if (d.x > W + 10) d.x = -10;
+        if (d.y < -10) d.y = H + 10; if (d.y > H + 10) d.y = -10;
+        pCtx.beginPath();
+        pCtx.fillStyle = `rgba(220,210,255,${d.a})`;
+        pCtx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        pCtx.fill();
       }
     }
 
@@ -688,25 +508,25 @@
     ];
 
     const GLOW_COLORS_RAW = [
-      [196,181,253],[249,168,212],[110,231,183],
-      [253,230,138],[147,197,253],[251,113,133],
-      [167,139,250],[52,211,153],[251,191,36],[56,189,248],
+      [196,181,253],[249,168,212],[110,231,183],[253,230,138],
+      [147,197,253],[251,113,133],[167,139,250],[52,211,153],
+      [251,191,36],[56,189,248],[196,181,253],[249,168,212],
+      [110,231,183],[253,230,138],[147,197,253],[251,113,133],
     ];
 
     const STAR_PTS = "50,2 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35";
     const ns = "http://www.w3.org/2000/svg";
-
     function rnd(a, b) { return a + Math.random() * (b - a); }
     function getSize() { return Math.max(110, Math.min(190, W * 0.14)); }
 
     const AVOID_R = 200;
     const RETURN_SPRING = 0.008;
-    const RETURN_DAMP = 0.82;
-    const WOBBLE_DAMP = 0.82;
+    const RETURN_DAMP = 0.84;
+    const WOBBLE_DAMP = 0.83;
     const margin = 20;
-    const MIN_STAR_GAP = 160;
+    const MIN_STAR_GAP = 150;
     const CENTER_CLEAR_R = 260;
-    const MAX_ATTEMPTS = 500;
+    const MAX_ATTEMPTS = 600;
 
     function placeHomes(count, s) {
       const placed = [];
@@ -717,13 +537,13 @@
         for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
           let hx, hy;
           const zone = Math.random();
-          if (zone < 0.4) hy = rnd(margin, topZone - s - margin);
-          else if (zone < 0.8) hy = rnd(bottomZone, H - s - margin);
+          if (zone < 0.45) hy = rnd(margin, topZone - s - margin);
+          else if (zone < 0.9) hy = rnd(bottomZone, H - s - margin);
           else hy = rnd(margin, H - s - margin);
           hx = rnd(margin, W - s - margin);
           const cx = hx + s * 0.5, cy = hy + s * 0.5;
           if (Math.hypot(cx - centerX, cy - centerY) < CENTER_CLEAR_R) continue;
-          let minDist = placed.length === 0 ? Infinity : Infinity;
+          let minDist = Infinity;
           for (const p of placed) { const d = Math.hypot(cx - p.cx, cy - p.cy); if (d < minDist) minDist = d; }
           if (placed.length === 0) minDist = Infinity;
           if (minDist >= MIN_STAR_GAP) { bestPos = { hx, hy, cx, cy }; break; }
@@ -742,16 +562,15 @@
       const { hx, hy } = homes[i] || { hx: rnd(margin, W - s - margin), hy: rnd(margin, H * 0.3) };
       const wrap = document.createElement("div");
       wrap.className = "float-wrap";
-      wrap.style.left = hx + "px";
-      wrap.style.top  = hy + "px";
+      wrap.style.left = hx + "px"; wrap.style.top = hy + "px";
 
       const [r,g,b] = GLOW_COLORS_RAW[i % GLOW_COLORS_RAW.length];
-      const glowA = `rgba(${r},${g},${b},0.5)`;
+      const glowA = `rgba(${r},${g},${b},0.48)`;
 
       const svgEl = document.createElementNS(ns, "svg");
       svgEl.setAttribute("viewBox", "0 0 100 100");
-
       const defs = document.createElementNS(ns, "defs");
+
       const clipId = `sc${i}`;
       const cp = document.createElementNS(ns, "clipPath");
       cp.setAttribute("id", clipId);
@@ -765,8 +584,7 @@
       filt.setAttribute("x", "-50%"); filt.setAttribute("y", "-50%");
       filt.setAttribute("width", "200%"); filt.setAttribute("height", "200%");
       const feG = document.createElementNS(ns, "feGaussianBlur");
-      feG.setAttribute("in", "SourceGraphic");
-      feG.setAttribute("stdDeviation", "6");
+      feG.setAttribute("in", "SourceGraphic"); feG.setAttribute("stdDeviation", "6");
       filt.appendChild(feG);
       defs.appendChild(cp); defs.appendChild(filt);
       svgEl.appendChild(defs);
@@ -796,60 +614,49 @@
       floatLayer.appendChild(wrap);
 
       return {
-        wrap, hx, hy,
-        x: hx, y: hy,
-        vx: rnd(-0.08, 0.08),
-        vy: rnd(-0.08, 0.08),
+        wrap, hx, hy, x: hx, y: hy,
+        vx: rnd(-0.08, 0.08), vy: rnd(-0.08, 0.08),
         phase: Math.random() * Math.PI * 2,
         phaseY: Math.random() * Math.PI * 2,
-        idleAmpX: rnd(0.15, 0.35),
-        idleAmpY: rnd(0.15, 0.35),
-        idleSpeedX: rnd(0.0004, 0.0009),
-        idleSpeedY: rnd(0.0005, 0.001),
+        idleAmpX: rnd(0.12, 0.30), idleAmpY: rnd(0.12, 0.30),
+        idleSpeedX: rnd(0.0003, 0.0008), idleSpeedY: rnd(0.0004, 0.0009),
         rotTarget: 0, rotCurrent: 0, rotVel: 0,
       };
     });
 
-    let t = 0;
     function tick() {
-      t++;
+      frameT++;
+      drawNebula();
       drawDots();
       const s = getSize();
 
       for (const f of floats) {
-        const cx = f.x + s * 0.5;
-        const cy = f.y + s * 0.5;
+        const cx = f.x + s * 0.5, cy = f.y + s * 0.5;
         const dx = cx - mx, dy = cy - my;
         const dist = Math.hypot(dx, dy) || 1;
         const isFleeing = dist < AVOID_R;
 
         if (isFleeing) {
-          const strength = ((AVOID_R - dist) / AVOID_R) * 0.5;
-          f.vx += (dx / dist) * strength;
-          f.vy += (dy / dist) * strength;
-          f.vx *= WOBBLE_DAMP;
-          f.vy *= WOBBLE_DAMP;
+          const strength = ((AVOID_R - dist) / AVOID_R) * 0.48;
+          f.vx += (dx / dist) * strength; f.vy += (dy / dist) * strength;
+          f.vx *= WOBBLE_DAMP; f.vy *= WOBBLE_DAMP;
           f.wrap.style.opacity = "0.95";
-          f.rotTarget = Math.max(-12, Math.min(12, f.vx * 22));
+          f.rotTarget = Math.max(-14, Math.min(14, f.vx * 22));
         } else {
           f.vx += (f.hx - f.x) * RETURN_SPRING;
           f.vy += (f.hy - f.y) * RETURN_SPRING;
-          f.vx *= RETURN_DAMP;
-          f.vy *= RETURN_DAMP;
-          const idleX = Math.sin(t * f.idleSpeedX + f.phase) * f.idleAmpX;
-          const idleY = Math.cos(t * f.idleSpeedY + f.phaseY) * f.idleAmpY;
-          f.vx += idleX;
-          f.vy += idleY;
-          f.wrap.style.opacity = "0.7";
-          f.rotTarget = Math.sin(t * f.idleSpeedX * 0.5 + f.phase) * 3.5;
+          f.vx *= RETURN_DAMP; f.vy *= RETURN_DAMP;
+          f.vx += Math.sin(frameT * f.idleSpeedX + f.phase) * f.idleAmpX;
+          f.vy += Math.cos(frameT * f.idleSpeedY + f.phaseY) * f.idleAmpY;
+          f.wrap.style.opacity = "0.72";
+          f.rotTarget = Math.sin(frameT * f.idleSpeedX * 0.6 + f.phase) * 4;
         }
 
-        f.rotVel += (f.rotTarget - f.rotCurrent) * 0.045;
-        f.rotVel *= 0.88;
+        f.rotVel += (f.rotTarget - f.rotCurrent) * 0.04;
+        f.rotVel *= 0.87;
         f.rotCurrent += f.rotVel;
 
-        f.x += f.vx;
-        f.y += f.vy;
+        f.x += f.vx; f.y += f.vy;
 
         const maxX = W - s - margin, maxY = H - s - margin;
         if (f.x < margin)  { f.x = margin;  f.vx *= -0.4; }
@@ -877,8 +684,7 @@
       if (e.target.closest("#gb-panel") || e.target.closest("#gb-toggle")) return;
       const r = document.createElement("span");
       r.className = "ripple";
-      r.style.left = e.clientX + "px";
-      r.style.top  = e.clientY + "px";
+      r.style.left = e.clientX + "px"; r.style.top = e.clientY + "px";
       document.body.appendChild(r);
       setTimeout(() => r.remove(), 800);
     });
