@@ -379,7 +379,7 @@
 
   <p class="lyric">"I'm in the middle of your picture, lying in the reeds."</p>
 
-  <script>
+  <script type="module">
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
     const centerCard = document.getElementById("centerCard");
@@ -412,7 +412,6 @@
     const gbFeedback = document.getElementById("gb-feedback");
     const gbCountLabel = document.getElementById("gb-count-label");
 
-    const GB_KEY = "hbd_rvs_413_messages";
     const MSG_COLORS = ["#c4b5fd","#f9a8d4","#6ee7b7","#fde68a","#93c5fd","#fb7185"];
 
     function colorFor(name) {
@@ -427,37 +426,6 @@
         d.toLocaleTimeString("en-PH", { hour: "2-digit", minute: "2-digit" });
     }
 
-    function loadMessages() {
-      try {
-        return JSON.parse(localStorage.getItem(GB_KEY) || "[]");
-      } catch(e) { return []; }
-    }
-
-    function saveMessages(msgs) {
-      localStorage.setItem(GB_KEY, JSON.stringify(msgs));
-    }
-
-    function renderMessages() {
-      const msgs = loadMessages();
-      gbMsgs.innerHTML = "";
-      if (msgs.length === 0) {
-        gbMsgs.appendChild(gbEmptyMsg);
-        gbCountLabel.textContent = "";
-        return;
-      }
-      msgs.slice().reverse().forEach(m => {
-        const bub = document.createElement("div");
-        bub.className = "gb-bubble";
-        const col = colorFor(m.name);
-        bub.innerHTML =
-          '<span class="gb-btime">' + fmtTime(m.ts) + '</span>' +
-          '<span class="gb-bname" style="color:' + col + '">' + escHtml(m.name.toUpperCase()) + '</span>' +
-          '<p class="gb-btext">' + escHtml(m.text) + '</p>';
-        gbMsgs.appendChild(bub);
-      });
-      gbCountLabel.textContent = msgs.length + (msgs.length === 1 ? " message" : " messages");
-    }
-
     function escHtml(s) {
       return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
@@ -468,29 +436,75 @@
       if (msg) setTimeout(() => { gbFeedback.textContent = ""; }, 2800);
     }
 
-    gbToggle.addEventListener("click", () => {
-      gbPanel.classList.toggle("open");
-      if (gbPanel.classList.contains("open")) renderMessages();
-    });
-
-    gbSendBtn.addEventListener("click", sendMsg);
-    gbMsgEl.addEventListener("keydown", e => {
-      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-    });
-
-    function sendMsg() {
-      const name = gbNameEl.value.trim();
-      const text = gbMsgEl.value.trim();
-      if (!name) { setFeedback("enter your name!", true); gbNameEl.focus(); return; }
-      if (!text) { setFeedback("write something first!", true); gbMsgEl.focus(); return; }
-      const msgs = loadMessages();
-      msgs.push({ name, text, ts: Date.now() });
-      saveMessages(msgs);
-      gbMsgEl.value = "";
-      renderMessages();
-      setFeedback("message sent! ✦", false);
-      gbMsgs.scrollTop = 0;
+    function renderMessages(msgs) {
+      gbMsgs.innerHTML = "";
+      if (!msgs || msgs.length === 0) {
+        gbMsgs.appendChild(gbEmptyMsg);
+        gbCountLabel.textContent = "";
+        return;
+      }
+      msgs.forEach(m => {
+        const bub = document.createElement("div");
+        bub.className = "gb-bubble";
+        const col = colorFor(m.name);
+        const ts = m.ts && m.ts.toDate ? m.ts.toDate() : new Date(m.ts);
+        bub.innerHTML =
+          '<span class="gb-btime">' + fmtTime(ts) + '</span>' +
+          '<span class="gb-bname" style="color:' + col + '">' + escHtml(m.name.toUpperCase()) + '</span>' +
+          '<p class="gb-btext">' + escHtml(m.text) + '</p>';
+        gbMsgs.appendChild(bub);
+      });
+      gbCountLabel.textContent = msgs.length + (msgs.length === 1 ? " message" : " messages");
     }
+
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js").then(({ initializeApp }) => {
+      return Promise.all([
+        import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"),
+      ]).then(([{ getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp }]) => {
+        const app = initializeApp({
+          apiKey: "AIzaSyCdqHfwAHB5-GXoZqKbStufFhKlN61RoTk",
+          authDomain: "hbd-rvs.firebaseapp.com",
+          projectId: "hbd-rvs",
+          storageBucket: "hbd-rvs.firebasestorage.app",
+          messagingSenderId: "868392429479",
+          appId: "1:868392429479:web:5916542e97777068c5b882"
+        });
+
+        const db = getFirestore(app);
+        const colRef = collection(db, "messages");
+        const q = query(colRef, orderBy("ts", "desc"));
+
+        onSnapshot(q, snap => {
+          const msgs = snap.docs.map(d => d.data());
+          renderMessages(msgs);
+        });
+
+        gbToggle.addEventListener("click", () => {
+          gbPanel.classList.toggle("open");
+        });
+
+        gbSendBtn.addEventListener("click", sendMsg);
+        gbMsgEl.addEventListener("keydown", e => {
+          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+        });
+
+        async function sendMsg() {
+          const name = gbNameEl.value.trim();
+          const text = gbMsgEl.value.trim();
+          if (!name) { setFeedback("enter your name!", true); gbNameEl.focus(); return; }
+          if (!text) { setFeedback("write something first!", true); gbMsgEl.focus(); return; }
+          gbSendBtn.disabled = true;
+          try {
+            await addDoc(colRef, { name, text, ts: serverTimestamp() });
+            gbMsgEl.value = "";
+            setFeedback("message sent! ✦", false);
+          } catch(e) {
+            setFeedback("something went wrong :(", true);
+          }
+          gbSendBtn.disabled = false;
+        }
+      });
+    });
 
     let W = window.innerWidth, H = window.innerHeight;
     let mx = W * 0.5, my = H * 0.5;
